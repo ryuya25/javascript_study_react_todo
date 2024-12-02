@@ -3,8 +3,8 @@ import './styles.css';
 
 export const Todo = () => {
   const [todoText, setTodoText] = useState("");
-  const [incompleteTodos, setIncompletTodos] = useState(["TODO A", "TODO B"]);
-  const [completeTodos, setCompletTodos] = useState(["TODO finish A", "TODO finish B"]);
+  const [incompleteTodos, setIncompletTodos] = useState([]);
+  const [completeTodos, setCompletTodos] = useState([]);
 
   const onchangeTodoText = (event) => setTodoText(event.target.value);;
   const onClickAdd = () => {
@@ -24,6 +24,13 @@ export const Todo = () => {
     const newTodos = [...incompleteTodos];
     newTodos.splice(index, 1);
     setIncompletTodos(newTodos);
+  }
+  const onClickBack = (index) => {
+    const newCompleteTodos = [...completeTodos];
+    newCompleteTodos.splice(index, 1);
+    setCompletTodos(newCompleteTodos);
+    const newIncompleteTodos = [...incompleteTodos, completeTodos[index]];
+    setIncompletTodos(newIncompleteTodos);
   }
 
   return (
@@ -52,11 +59,11 @@ export const Todo = () => {
       <div className='complete-area'>
         <p className='title'>完了のTODO</p>
         <ul>
-          {completeTodos.map((todo) => (
-            <li>
+          {completeTodos.map((todo, index) => (
+            <li key={todo}>
               <div className='list-row'>
                 <p className='todo-item'>{todo}</p>
-                <button>戻す</button>
+                <button onClick={() => onClickBack(index)}>戻す</button>
               </div>
             </li>
           ))}
